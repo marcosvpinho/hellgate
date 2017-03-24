@@ -4,6 +4,7 @@
 char pin =5;
 const unsigned char led_mask=(1<<pin);
 bool led_state=0;
+char message[8];
 
 void acende_led(){
 	led_state=1;
@@ -24,6 +25,10 @@ void setup(){
 void loop(){
 	acende_led();
 	apaga_led();
+	val_botao = botao.get();
+	led.set(val_botao);
+	sprintf(message, "LED: %d\n", val_botao);
+	uart.puts(message);
 }
 
 

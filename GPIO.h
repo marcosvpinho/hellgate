@@ -18,12 +18,12 @@ public:
 
 	GPIO(int pin, portDirection_t dir);
 	bool get();
-	void set(bool val);
+	void set(bool val = 1);
 
 private:
-	 uint8_t *port;
-	 uint8_t *ddr;
-	 uint8_t *pin;
+	 GPIO *port;
+
+	 int pin;
 
 };
 

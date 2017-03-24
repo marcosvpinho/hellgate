@@ -11,23 +11,25 @@
 GPIO::GPIO(int pin, portDirection_t dir){
 
 	if(pin <=7){
-		const unsigned char mask=(1<<pin);
+		port =GPIO_PORT::portD;
 
-		*ddr= DDRD | mask;
-		*port=PORTD;
-
+	}else if(pin<13){
+		port =GPIO_PORT::portC;
+		pin =14;
 	}else{
-		int p=pin-8;
-		const unsigned char mask=(1<<p);
-		*ddr= DDRB | mask;
-		*port=PORTB;
+		port = GPIO_PORT::portB;
+		pin =8;
 	}
+	_port->dir(pin, dir);
 }
 
 bool GPIO::get(){
-	return this->port;
+	return this->port->get(pin);
 }
 
 void GPIO::set(bool val){
-
+		port->set(pin,val);
+}
+void GPIO::clear(){
+	this->set(0);
 }
