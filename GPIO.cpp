@@ -7,9 +7,9 @@
 
 #include "GPIO.h"
 #include <avr/io.h>
+#include "GPIO_Port.h"
 
 GPIO::GPIO(int pin, portDirection_t dir){
-
 	if(pin <=7){
 		port =GPIO_PORT::portD;
 

@@ -12,7 +12,7 @@ namespace GPIO_Port{
 class GPIO_Port {
 public:
 	GPIO_Port();
-	virtual ~GPIO_Port();
+	~GPIO_Port();
 	void dir(int p, int io);
 	void set(int p, int val =1);
 	void clear(int p);

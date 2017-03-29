@@ -7,6 +7,7 @@
 #include <avr/io.h>
 #ifndef GPIO_H_
 #define GPIO_H_
+#include "GPIO_Port.h"
 
 class GPIO {
 public:

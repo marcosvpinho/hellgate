@@ -17,10 +17,11 @@ enum PORT_ADD_BASE{
 
 }
 
-GPIO_Port::~GPIO_Port() {
+~GPIO_Port() {
 	// TODO Auto-generated destructor stub
 }
-void GPIO_Port::set(int p, int val){
+
+void set(int p, int val){
 	if(val){
 		port |= (1 << p);
 	}else{
@@ -28,7 +29,7 @@ void GPIO_Port::set(int p, int val){
 	}
 
 }
-void GPIO_Port::dir(int p, int io){
+void dir(int p, int io){
 
 
 }
