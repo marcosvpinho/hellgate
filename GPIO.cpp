@@ -7,29 +7,48 @@
 
 #include "GPIO.h"
 #include <avr/io.h>
-#include "GPIO_Port.h"
 
-GPIO::GPIO(int pin, portDirection_t dir){
-	if(pin <=7){
-		port =GPIO_PORT::portD;
 
-	}else if(pin<13){
-		port =GPIO_PORT::portC;
-		pin =14;
-	}else{
-		port = GPIO_PORT::portB;
-		pin =8;
+GPIO::GPIO(int pin, PortDirection_t dir){
+	// Calcular mascara
+	// configurar DDR
+	if ((0 <= pin) & (pin <= 7)){
+		_mask = (1 << pin);
+		_ddr = &DDRD;
+		_pin = &PIND;
+		_port = &PORTD;
+	}else if((8 <= pin) & (pin <= 13)){
+		_mask = (1 << (pin-8));
+		_ddr = &DDRB;
+		_pin = &PINB;
+		_port = &PORTB;
+	}else if((pin >= 14) & (pin <=19)){ // PIN C
+		 _mask = (1 << (pin-14));
+		_ddr = &DDRC;
+		_pin = &PINC;
+		_port = &PORTC;
 	}
-	_port->dir(pin, dir);
+
+	if(dir==OUTPUT){
+		*_ddr |= _mask;
+	}else{
+		*_ddr &= ~_mask;
+	}
+
 }
+
+GPIO::~GPIO() {};
 
 bool GPIO::get(){
-	return this->port->get(pin);
-}
+	//ler do pino
+	return (*_pin & _mask);
+};
 
-void GPIO::set(bool val){
-		port->set(pin,val);
-}
-void GPIO::clear(){
-	this->set(0);
-}
+void GPIO::set(bool valor){
+	//escrever na port
+	if (valor){
+		*_port |= _mask;
+	}else{
+		*_port &= ~_mask;
+	};
+};

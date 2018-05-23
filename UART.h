@@ -8,36 +8,54 @@
 #ifndef UART_H_
 #define UART_H_
 
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include "FIFO.h"
+
+
+
 class UART {
 public:
-	enum StopBits_t{
+	enum StopBits_t {
 		STOPBITS_1 = 0,
 		STOPBITS_2 = 1
 	};
-	enum ParityBits_t{
-			PARITY_NONE = 0,
-			PARITY_EVEN = 2,
-			PARITY_ODD = 3
-		};
-	enum DataBits_t{
-			DATABITS_5 = 0,
-			DATABITS_6 = 1,
-			DATABITS_7 = 2,
-			DATABITS_8 = 3,
-			DATABITS_9 = 7
+	enum ParityBits_t {
+		PARITY_NONE = 0,
+		PARITY_EVEN = 2,
+		PARITY_ODD = 3
+	};
+	enum DataBits_t {
+		DATABITS_5 = 0,
+		DATABITS_6 = 1,
+		DATABITS_7 = 2,
+		DATABITS_8 = 3,
+		DATABITS_9 = 7
+	};
 
-		};
-	UART(unsigned long rate, StopBits_t stop_bit , ParityBits_t parity , DataBits_t db);
-	void put(unsigned char data);
+	UART(unsigned long bd=19200,
+			DataBits_t db=DATABITS_8,
+			ParityBits_t pr=PARITY_NONE,
+			StopBits_t sb=STOPBITS_1);
+	//virtual ~UART();
+	void put(unsigned char dado);
 	unsigned char get();
-	void puts(char * str);
+	void puts(const char * str);
 
+	static void isr_rx_handler();
+	static void isr_tx_handler();
+
+	static UART * self() { return __singleton; }
 private:
-	unsigned long _baud_rate;
-	StopBits_t _stop_bit;
-	ParityBits_t _parity;
-	DataBits_t _data_bits;
+	int _baudrate;
+	DataBits_t _databits;
+	ParityBits_t _paridade;
+	StopBits_t _stopbits;
 
+	FIFO<32,char> _tx_fifo;
+	FIFO<32,char> _rx_fifo;
+
+	static UART * __singleton;
 };
 
 #endif /* UART_H_ */

@@ -4,28 +4,31 @@
  *  Created on: 22 de mar de 2017
  *      Author: aluno
  */
-#include <avr/io.h>
+
+#include <stdint.h>
+
 #ifndef GPIO_H_
 #define GPIO_H_
-#include "GPIO_Port.h"
 
 class GPIO {
 public:
-
-	enum portDirection_t{
-		INPUT =0,
-		OUTPUT=1
+	enum PortDirection_t {
+		INPUT = 0,
+		OUTPUT = 1
 	};
 
-	GPIO(int pin, portDirection_t dir);
+
+	GPIO(int pin, PortDirection_t dir);
+	~GPIO();
+
 	bool get();
-	void set(bool val = 1);
+	void set(bool valor);
 
-private:
-	 GPIO *port;
-
-	 int pin;
-
+private :
+	unsigned char _mask;
+	volatile uint8_t * _port;
+	volatile uint8_t * _pin;
+	volatile uint8_t * _ddr;
 };
 
 
